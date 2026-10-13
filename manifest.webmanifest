@@ -1,7 +1,7 @@
 {
   "name": "Canivete do Dia a Dia",
   "short_name": "Canivete",
-  "description": "Ferramentas do dia a dia, jogos inteligentes, mudança de voz, música de fundo e botões de som, tudo no navegador.",
+  "description": "Ferramentas do dia a dia, jogos inteligentes, música de fundo e botões de som, tudo no navegador.",
   "lang": "pt-BR",
   "start_url": "./",
   "scope": "./",
