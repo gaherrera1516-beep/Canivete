@@ -736,6 +736,19 @@ body.has-dock .app{padding-bottom:110px}
 .more-card>summary b{font-size:16px;font-weight:700}
 .more-card>summary small{font-size:13px;color:var(--muted)}
 .more-card .more-body{display:grid;gap:16px;padding:0 20px 20px;animation:enter .35s cubic-bezier(.16,1,.3,1) backwards}
+
+.btn .ic{width:18px;height:18px;vertical-align:-4px}
+.state-pill.play{color:var(--sun);border-color:color-mix(in srgb,var(--sun) 45%,var(--visor-line))}
+.state-pill.play i{background:var(--sun);animation:pulseRec .8s ease-in-out infinite}
+.visor .seg{background:var(--visor-chip);border-color:var(--visor-line)}
+.visor .seg span{color:var(--visor-dim)}
+.visor .seg input:checked+span{background:var(--sun);color:#14213D;box-shadow:none}
+.vz-modes{justify-self:stretch}
+.vz-modes label{flex:1 1 auto}
+.vz-modes span{text-align:center}
+.scope{transition:border-color .25s ease,box-shadow .25s ease}
+#vz-visor[data-wt="talk"] .scope{border-color:var(--p2);box-shadow:0 0 0 3px rgb(229 72 77 / .2)}
+#vz-visor[data-wt="play"] .scope{border-color:var(--sun);box-shadow:0 0 0 3px var(--sun-glow)}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1416,7 +1429,7 @@ function copyText(text,btn,fallback){
   catch(e){if(fallback)fallback();done('Selecionado: use Ctrl+C')}
 }
 let actx=null;
-function ensureAudio(){try{if(!actx){const AC=window.AudioContext||window.webkitAudioContext;if(AC)actx=new AC()}if(actx&&actx.state==='suspended')actx.resume()}catch(e){}}
+function ensureAudio(){try{if(!actx){const AC=window.AudioContext||window.webkitAudioContext;if(AC)actx=new AC()}if(actx&&actx.state!=='running'&&actx.state!=='closed')actx.resume()}catch(e){}}
 function tone(freq,dur=.15,vol=.25,type='sine',delay=0){
   if(!actx)return;
   try{const t=actx.currentTime+delay,o=actx.createOscillator(),g=actx.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.015);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(actx.destination);o.start(t);o.stop(t+dur+.02)}catch(e){}
@@ -3030,7 +3043,9 @@ const cleanName=(s,def)=>(String(s||'').replace(/[\\/:*?"<>|]+/g,'').trim().slic
 const IN_FRAME=(()=>{try{return window.self!==window.top}catch(e){return true}})();
 const SITE_URL='https://gaherrera1516-beep.github.io/Canivete/';
 const isIOS=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-function sctx(){ensureAudio();return actx}
+function audioSession(t){try{if(navigator.audioSession&&navigator.audioSession.type!==t)navigator.audioSession.type=t}catch(e){}}
+function sctx(){if(!VZ_ON())audioSession('playback');ensureAudio();return actx}
+const VZ_ON=()=>{try{return !!(VZ.on||VZ.busy)}catch(e){return false}};
 const tfmt=s=>{if(!isFinite(s)||s<0)s=0;s=Math.floor(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return (h?h+':'+pad(m):m)+':'+pad(x)};
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -3044,9 +3059,9 @@ function micErr(e){
   if(n==='NotReadableError'||n==='AbortError')return 'O microfone está sendo usado por outro programa. Feche-o e tente de novo.';
   return 'Não foi possível ligar o microfone neste navegador.';
 }
-async function getMic(id,ns){
+async function getMic(id,ns,speaker){
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw {name:'NotSupported'};
-  const a={echoCancellation:false,noiseSuppression:!!ns,autoGainControl:false};
+  const a={echoCancellation:!!speaker,noiseSuppression:!!ns||!!speaker,autoGainControl:!!speaker};
   if(id)a.deviceId={exact:id};
   return navigator.mediaDevices.getUserMedia({audio:a});
 }
@@ -3184,7 +3199,7 @@ function vfxRun(s,inp,out){
     out[i]=y;
   }
 }
-const VFX_SRC=vfxNew.toString()+'\n'+vfxRun.toString()+'\nclass CaniveteVFX extends AudioWorkletProcessor{constructor(){super();this.s=vfxNew(sampleRate);this.port.onmessage=e=>{Object.assign(this.s.p,e.data)}}process(i,o){const a=i[0]&&i[0][0],b=o[0]&&o[0][0];if(!b)return true;if(!a){b.fill(0);return true}vfxRun(this.s,a,b);return true}}\nregisterProcessor("canivete-vfx",CaniveteVFX);';
+const VFX_SRC=vfxNew.toString()+'\n'+vfxRun.toString()+'\nclass CaniveteVFX extends AudioWorkletProcessor{constructor(){super();this.s=vfxNew(sampleRate);this.port.onmessage=e=>{Object.assign(this.s.p,e.data)}}process(i,o){const a=i[0]&&i[0][0],b=o[0]&&o[0][0];if(!b)return true;if(!a){b.fill(0);return true}vfxRun(this.s,a,b);return true}}\nregisterProcessor("canivete-vfx",CaniveteVFX);\nclass CaniveteTap extends AudioWorkletProcessor{constructor(){super();this.on=false;this.b=new Float32Array(2048);this.n=0;this.port.onmessage=e=>{this.on=!!e.data.on;this.n=0}}process(i){const a=i[0]&&i[0][0];if(!this.on||!a)return true;for(let k=0;k<a.length;k++){this.b[this.n++]=a[k];if(this.n===2048){this.port.postMessage(this.b.slice(0));this.n=0}}return true}}\nregisterProcessor("canivete-tap",CaniveteTap);';
 let vfxReady=null;
 function vfxLoad(ctx){
   if(vfxReady)return vfxReady;
@@ -3200,6 +3215,11 @@ async function vfxNode(ctx){
   const sp=ctx.createScriptProcessor(1024,1,1),s=vfxNew(ctx.sampleRate);
   sp.onaudioprocess=e=>vfxRun(s,e.inputBuffer.getChannelData(0),e.outputBuffer.getChannelData(0));
   return {node:sp,set:p=>Object.assign(s.p,p)};
+}
+async function tapNode(ctx,onChunk){
+  if(await vfxLoad(ctx)){try{const n=new AudioWorkletNode(ctx,'canivete-tap',{numberOfInputs:1,numberOfOutputs:1,outputChannelCount:[1],channelCount:1,channelCountMode:'explicit'});n.port.onmessage=e=>onChunk(e.data);return {node:n,set:on=>n.port.postMessage({on:!!on})}}catch(e){}}
+  const sp=ctx.createScriptProcessor(2048,1,1);let on=false;sp.onaudioprocess=e=>{if(on)onChunk(new Float32Array(e.inputBuffer.getChannelData(0)))};
+  return {node:sp,set:v=>{on=!!v}};
 }
 const vfxParams=c=>({ratio:Math.pow(2,c.pitch/12),robot:c.robot/100,robotHz:c.robotHz,gate:c.gate>0?Math.pow(c.gate/100,2)*.09:0});
 function impulse(ctx,sec){const sr=ctx.sampleRate,n=Math.max(1,Math.floor(sr*sec)),b=ctx.createBuffer(2,n,sr);for(let c=0;c<2;c++){const d=b.getChannelData(c);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,3.2)}return b}
@@ -3230,9 +3250,9 @@ function vzChain(ctx){
   };
   return c;
 }
-const VZ={on:false,busy:false,stream:null,src:null,fx:null,chain:null,out:null,mon:null,an:null,recDest:null,rec:null,recT:0,recAt:0,
+const VZ={on:false,busy:false,stream:null,src:null,fx:null,chain:null,out:null,mon:null,an:null,anIn:null,tap:null,sink0:null,recDest:null,rec:null,recT:0,recAt:0,
   cfg:Object.assign({},VZ_DEF,store.get('voz:cfg',{})),preset:store.get('voz:preset','normal'),mine:store.get('voz:minhas',[]),
-  monOn:store.get('voz:mon',true),inId:store.get('voz:in',''),ns:store.get('voz:ns',false),devs:{inputs:[],outputs:[]},msg:'',ui:false,lastBlob:null,fileBlob:null};
+  mode:store.get('voz:modo','alto'),inId:store.get('voz:in',''),ns:store.get('voz:ns',false),devs:{inputs:[],outputs:[]},msg:'',ui:false,lastBlob:null,fileBlob:null};
 let vzSaveT=0;
 function vzPersist(){clearTimeout(vzSaveT);vzSaveT=setTimeout(()=>{store.set('voz:cfg',VZ.cfg);store.set('voz:preset',VZ.preset)},300)}
 function vzApply(){if(VZ.fx)VZ.fx.set(vfxParams(VZ.cfg));if(VZ.chain)VZ.chain.set(VZ.cfg)}
@@ -3240,43 +3260,92 @@ function vzName(){if(VZ.preset.indexOf('mine:')===0){const m=VZ.mine.find(x=>'mi
 async function vzStart(){
   if(VZ.on||VZ.busy)return;
   const ctx=sctx();if(!ctx){vzMsg('Este navegador não tem suporte a áudio.');return}
-  VZ.busy=true;vzRender();
+  VZ.busy=true;vzRender();audioSession('play-and-record');
   try{await ctx.resume()}catch(e){}
-  let stream=null;
-  try{stream=await getMic(VZ.inId,VZ.ns)}
-  catch(e){if(VZ.inId){VZ.inId='';try{stream=await getMic('',VZ.ns)}catch(e2){VZ.busy=false;vzMsg(micErr(e2));vzRender();return}}else{VZ.busy=false;vzMsg(e&&e.name==='NotSupported'?'Este navegador não deixa usar o microfone.':micErr(e));vzRender();return}}
+  let stream=null;const spk=VZ.mode==='alto';
+  try{stream=await getMic(VZ.inId,VZ.ns,spk)}
+  catch(e){if(VZ.inId){VZ.inId='';try{stream=await getMic('',VZ.ns,spk)}catch(e2){VZ.busy=false;vzMsg(micErr(e2));vzRender();return}}else{VZ.busy=false;vzMsg(e&&e.name==='NotSupported'?'Este navegador não deixa usar o microfone.':micErr(e));vzRender();return}}
   const tr=stream.getAudioTracks()[0];
   if(tr&&isCable(tr.label)){
     const d=await listDevs(),real=d.inputs.find(x=>x.deviceId&&x.deviceId!=='default'&&x.deviceId!=='communications'&&!isCable(x.label));
-    if(real){stream.getTracks().forEach(t=>t.stop());try{stream=await getMic(real.deviceId,VZ.ns);VZ.inId=real.deviceId;toast('Usando '+real.label+' para não dar eco com o cabo virtual')}catch(e){VZ.busy=false;vzMsg(micErr(e));vzRender();return}}
+    if(real){stream.getTracks().forEach(t=>t.stop());try{stream=await getMic(real.deviceId,VZ.ns,spk);VZ.inId=real.deviceId;toast('Usando '+real.label+' para não dar eco com o cabo virtual')}catch(e){VZ.busy=false;vzMsg(micErr(e));vzRender();return}}
   }
   const tr2=stream.getAudioTracks()[0];
   try{
     VZ.stream=stream;VZ.src=ctx.createMediaStreamSource(stream);
     VZ.fx=await vfxNode(ctx);VZ.chain=vzChain(ctx);
-    VZ.out=ctx.createGain();VZ.mon=ctx.createGain();VZ.mon.gain.value=VZ.monOn?1:0;
+    VZ.out=ctx.createGain();VZ.mon=ctx.createGain();VZ.mon.gain.value=VZ.mode==='fone'?1:0;
     VZ.an=ctx.createAnalyser();VZ.an.fftSize=2048;VZ.recDest=ctx.createMediaStreamDestination();
+    VZ.anIn=ctx.createAnalyser();VZ.anIn.fftSize=1024;VZ.src.connect(VZ.anIn);
+    VZ.tap=await tapNode(ctx,wtChunk);VZ.sink0=ctx.createGain();VZ.sink0.gain.value=0;VZ.out.connect(VZ.tap.node);VZ.tap.node.connect(VZ.sink0);VZ.sink0.connect(ctx.destination);
     VZ.src.connect(VZ.fx.node);VZ.fx.node.connect(VZ.chain.in);VZ.chain.out.connect(VZ.out);
     VZ.out.connect(VZ.an);VZ.out.connect(VZ.mon);VZ.mon.connect(ctx.destination);VZ.out.connect(VZ.recDest);busLink(VZ.out,true);
     VZ.chain.set(VZ.cfg,true);VZ.fx.set(vfxParams(VZ.cfg));
-  }catch(e){stream.getTracks().forEach(t=>t.stop());VZ.busy=false;vzMsg('Não foi possível processar o som do microfone neste navegador.');vzRender();return}
+  }catch(e){stream.getTracks().forEach(t=>t.stop());VZ.busy=false;audioSession('playback');vzMsg('Não foi possível processar o som do microfone neste navegador.');vzRender();return}
   tr2&&tr2.addEventListener('ended',()=>{if(VZ.on){vzStop();vzMsg('O microfone foi desconectado.')}});
   VZ.on=true;VZ.busy=false;VZ.msg='';setLive('voz',true);
   VZ.devs=await listDevs();
   const saved=store.get('som:sink','');
   if(saved&&!BUS.sink&&VZ.devs.outputs.some(o=>o.deviceId===saved)){try{await busSink(saved)}catch(e){}}
+  if(VZ.mode==='alto')wtStart();
   vzRender();vzDevRender();dockRender();kick();
 }
 function vzStop(){
   if(!VZ.on)return;
   if(VZ.rec){try{VZ.rec.stop()}catch(e){}}
+  wtStop();
   try{VZ.stream.getTracks().forEach(t=>t.stop())}catch(e){}
-  [VZ.src,VZ.fx&&VZ.fx.node,VZ.chain&&VZ.chain.out,VZ.out,VZ.mon,VZ.an].forEach(n=>{try{n&&n.disconnect()}catch(e){}});
-  Object.assign(VZ,{on:false,stream:null,src:null,fx:null,chain:null,out:null,mon:null,an:null,recDest:null});
-  setLive('voz',false);vzRender();dockRender();vzDraw();
+  [VZ.src,VZ.fx&&VZ.fx.node,VZ.chain&&VZ.chain.out,VZ.out,VZ.mon,VZ.an,VZ.anIn,VZ.tap&&VZ.tap.node,VZ.sink0].forEach(n=>{try{n&&n.disconnect()}catch(e){}});
+  Object.assign(VZ,{on:false,stream:null,src:null,fx:null,chain:null,out:null,mon:null,an:null,anIn:null,tap:null,sink0:null,recDest:null});
+  audioSession('playback');setLive('voz',false);vzRender();dockRender();vzDraw();
 }
 function vzMsg(t){VZ.msg=t;if(VZ.ui)setText('vz-msg',t||vzIdleMsg())}
-const vzIdleMsg=()=>VZ.on?(VZ.monOn?'Fale agora: você está ouvindo sua voz modificada ao vivo. Troque de voz à vontade, muda na hora.':'O microfone está ligado. Marque “Ouvir minha voz modificada” para escutar o efeito.'):'Ligue o microfone, escolha uma voz e fale: você ouve sua voz modificada na hora. O som é processado no seu aparelho e não vai para nenhum servidor.';
+const VZ_MODES={alto:['Alto-falante','Sem fone: fale uma frase e, quando parar, o alto-falante toca sua voz modificada. Assim não dá microfonia.'],fone:['Fone de ouvido','Com fone: você ouve sua voz modificada ao mesmo tempo em que fala.'],mudo:['Sem ouvir','Não toca nada aqui. Use quando a voz só vai para um programa do computador.']};
+function vzIdleMsg(){
+  if(!VZ.on)return 'Ligue o microfone, escolha uma voz e fale. O som é processado no seu aparelho e não vai para nenhum servidor.';
+  if(VZ.mode==='alto')return WT.state==='talk'?'Gravando sua fala… Quando você parar de falar, ela toca com a voz nova.':WT.state==='play'?'Tocando sua voz modificada…':'Pode falar. Quando você parar, o alto-falante toca sua voz modificada.';
+  if(VZ.mode==='fone')return 'Fale agora: você está ouvindo sua voz modificada ao vivo no fone. Troque de voz à vontade, muda na hora.';
+  return 'O microfone está ligado, mas nada toca aqui. A voz modificada vai só para o programa escolhido abaixo.';
+}
+/* Modo alto-falante: grava cada frase e toca com a voz nova assim que você para de falar */
+const WT={state:'off',chunks:[],pre:[],preN:0,floor:.004,quiet:0,talk:0,iv:0,src:null,until:0,b:null};
+function wtStart(){if(!VZ.on||VZ.mode!=='alto'||WT.iv)return;Object.assign(WT,{state:'listen',chunks:[],pre:[],preN:0,quiet:0,talk:0});if(VZ.tap)VZ.tap.set(true);WT.iv=setInterval(wtTick,40);vzRender()}
+function wtStop(){clearInterval(WT.iv);WT.iv=0;if(WT.src){try{WT.src.onended=null;WT.src.stop()}catch(e){}WT.src=null}Object.assign(WT,{state:'off',chunks:[],pre:[],preN:0});if(VZ.tap)VZ.tap.set(false)}
+function wtChunk(c){if(WT.state==='talk')WT.chunks.push(c);else if(WT.state==='listen'){WT.pre.push(c);WT.preN+=c.length;const max=(actx?actx.sampleRate:48000)*.4;while(WT.pre.length>1&&WT.preN-WT.pre[0].length>max)WT.preN-=WT.pre.shift().length}}
+function wtLevel(){const a=VZ.anIn;if(!a)return 0;const n=a.fftSize,b=WT.b&&WT.b.length===n?WT.b:(WT.b=new Float32Array(n));a.getFloatTimeDomainData(b);let s=0;for(let i=0;i<n;i++)s+=b[i]*b[i];return Math.sqrt(s/n)}
+function wtTick(){
+  if(!VZ.on){wtStop();return}
+  if(WT.state==='play')return;
+  const now=performance.now();
+  if(WT.state==='cool'){if(now<WT.until)return;WT.state='listen';WT.pre=[];WT.preN=0;vzRender()}
+  const r=wtLevel(),thr=Math.max(.01,WT.floor*3.2);
+  if(WT.state==='listen'){
+    WT.floor=Math.max(.0015,WT.floor*.97+Math.min(r,WT.floor*2)*.03);
+    if(r>thr){WT.state='talk';WT.chunks=WT.pre.slice();WT.pre=[];WT.preN=0;WT.talk=0;WT.quiet=0;vzRender()}
+  }else if(WT.state==='talk'){
+    WT.talk+=40;WT.quiet=r<thr*.7?WT.quiet+40:0;
+    if(WT.quiet>=800||WT.talk>=30000)wtPlay();
+  }
+}
+function wtPlay(){
+  const ctx=actx;if(!ctx)return;const sr=ctx.sampleRate;let n=0;WT.chunks.forEach(c=>{n+=c.length});
+  const len=n-Math.max(0,Math.floor((WT.quiet-350)/1000*sr));
+  if(len<sr*.3||WT.talk-WT.quiet<200){WT.state='listen';WT.chunks=[];vzRender();return}
+  const buf=ctx.createBuffer(1,len,sr),d=buf.getChannelData(0);let o=0;
+  for(const c of WT.chunks){if(o>=len)break;const k=Math.min(c.length,len-o);d.set(c.subarray(0,k),o);o+=k}
+  const fade=Math.min(len,Math.floor(sr*.03));for(let i=0;i<fade;i++)d[len-1-i]*=i/fade;
+  WT.chunks=[];WT.state='play';
+  const s=ctx.createBufferSource();s.buffer=buf;s.connect(ctx.destination);
+  s.onended=()=>{if(WT.src!==s)return;WT.src=null;WT.state='cool';WT.until=performance.now()+450;vzRender()};
+  WT.src=s;try{if(ctx.state!=='running')ctx.resume()}catch(e){}s.start();vzRender();
+}
+async function vzSetMode(m){
+  if(!VZ_MODES[m]||m===VZ.mode)return;const prev=VZ.mode;VZ.mode=m;store.set('voz:modo',m);
+  if(VZ.on&&(prev==='alto'||m==='alto')){vzStop();await vzStart();return}
+  if(VZ.mon)VZ.mon.gain.setTargetAtTime(m==='fone'?1:0,actx.currentTime,.02);
+  vzRender();
+}
+function soundTest(){const ctx=sctx();if(!ctx){toast('Este navegador não tem suporte a áudio.');return}try{ctx.resume()}catch(e){}tone(660,.18,.35,'sine',0);tone(880,.18,.35,'sine',.16);tone(1320,.35,.3,'sine',.32);toast('Se você ouviu um plim, o som está funcionando. Se não, aumente o volume do aparelho.')}
 function vzRecToggle(){
   if(VZ.rec){try{VZ.rec.stop()}catch(e){}return}
   if(!VZ.on){toast('Ligue o microfone primeiro');return}
@@ -3326,11 +3395,14 @@ function vzRender(){
   if(!VZ.ui)return;
   const [n,d]=vzName(),pill=$('#vz-pill');
   setText('vz-name',n);setText('vz-desc',d);
-  pill.className='state-pill'+(VZ.rec?' rec':VZ.on?' on':'');
-  if(!VZ.rec)setText('vz-pill-t',VZ.busy?'Ligando…':VZ.on?'Ao vivo':'Desligado');
+  const wt=VZ.on&&VZ.mode==='alto'?WT.state:'';
+  pill.className='state-pill'+(VZ.rec||wt==='talk'?' rec':wt==='play'?' play':VZ.on?' on':'');
+  if(!VZ.rec)setText('vz-pill-t',VZ.busy?'Ligando…':!VZ.on?'Desligado':wt==='talk'?'Gravando fala':wt==='play'?'Tocando':wt?'Pode falar':'Ao vivo');
+  $$('#vz-modes input').forEach(i=>{i.checked=i.value===VZ.mode});setText('vz-mode-hint',VZ_MODES[VZ.mode][1]);
+  $('#vz-visor').dataset.wt=wt||'';
   const on=$('#vz-on');on.textContent=VZ.busy?'Ligando…':VZ.on?'Desligar microfone':'Ligar microfone';on.disabled=VZ.busy;on.classList.toggle('primary',!VZ.on);
   const rb=$('#vz-rec');rb.classList.toggle('on',!!VZ.rec);rb.querySelector('span').textContent=VZ.rec?'Parar gravação':'Gravar';rb.disabled=!VZ.on;
-  $('#vz-mon').checked=VZ.monOn;$('#vz-ns').checked=VZ.ns;
+  $('#vz-ns').checked=VZ.ns;
   setText('vz-msg',VZ.msg||vzIdleMsg());
   $$('#vz-presets .vp').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.p===VZ.preset)));
   $$('#vz-mine [data-mine]').forEach(b=>b.setAttribute('aria-pressed',String('mine:'+b.dataset.mine===VZ.preset)));
@@ -3383,8 +3455,8 @@ HOOKS.voz={init(b){
         '<div class="vz-head"><span class="v-label">Microfone</span><span class="state-pill" id="vz-pill"><i></i><span id="vz-pill-t">Desligado</span></span></div>'+
         '<div class="vz-now"><b id="vz-name">Normal</b><span id="vz-desc"></span></div>'+
         '<canvas class="scope" id="vz-scope" aria-hidden="true"></canvas><div class="meter" aria-hidden="true"><div id="vz-meter"></div></div>'+
-        '<div class="btns"><button type="button" class="btn primary big" id="vz-on">Ligar microfone</button><button type="button" class="btn big rec-btn" id="vz-rec" disabled><i></i><span>Gravar</span></button></div>'+
-        '<label class="check"><input type="checkbox" id="vz-mon"><span>Ouvir minha voz modificada ao vivo (use fone de ouvido para não dar microfonia)</span></label>'+
+                '<div class="field"><span class="v-label">Como você vai ouvir</span><div class="seg vz-modes" id="vz-modes" role="radiogroup" aria-label="Como você vai ouvir">'+Object.keys(VZ_MODES).map(k=>'<label><input type="radio" name="vz-modo" value="'+k+'"><span>'+VZ_MODES[k][0]+'</span></label>').join('')+'</div><p class="hint" id="vz-mode-hint"></p></div>'+
+        '<div class="btns"><button type="button" class="btn primary big" id="vz-on">Ligar microfone</button><button type="button" class="btn big rec-btn" id="vz-rec" disabled><i></i><span>Gravar</span></button><button type="button" class="btn big" id="vz-test">'+icon('vol')+' Testar som</button></div>'+
         '<p class="v-sub" id="vz-msg" aria-live="polite"></p>'+
         '<div class="rec-out" id="vz-rec-out" hidden></div>'+
       '</div>'+
@@ -3412,7 +3484,8 @@ HOOKS.voz={init(b){
   vzMineRender();vzSliders();vzRender();vzDevRender();
   $('#vz-on').addEventListener('click',()=>{if(VZ.on)vzStop();else vzStart()});
   $('#vz-rec').addEventListener('click',vzRecToggle);
-  $('#vz-mon').addEventListener('change',e=>{VZ.monOn=e.target.checked;store.set('voz:mon',VZ.monOn);if(VZ.mon)VZ.mon.gain.setTargetAtTime(VZ.monOn?1:0,actx.currentTime,.02);vzRender()});
+  $('#vz-modes').addEventListener('change',e=>{if(e.target.name==='vz-modo')vzSetMode(e.target.value)});
+  $('#vz-test').addEventListener('click',soundTest);
   $('#vz-ns').addEventListener('change',async e=>{VZ.ns=e.target.checked;store.set('voz:ns',VZ.ns);if(VZ.on){vzStop();await vzStart()}});
   $('#vz-presets').addEventListener('click',e=>{const p=e.target.closest('.vp');if(!p)return;const pr=VZ_PRESETS.find(x=>x[0]===p.dataset.p);VZ.cfg=Object.assign({},VZ_DEF,{gate:VZ.cfg.gate,vol:VZ.cfg.vol},pr[3]);VZ.preset=pr[0];vzSliders();vzApply();vzRender();vzPersist()});
   $('#vz-mine').addEventListener('click',e=>{
