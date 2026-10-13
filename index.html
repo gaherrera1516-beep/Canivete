@@ -680,6 +680,61 @@ body.has-dock .app{padding-bottom:110px}
 @keyframes pulseDot{0%{box-shadow:0 0 0 0 rgb(47 178 123 / .6)}100%{box-shadow:0 0 0 9px rgb(47 178 123 / 0)}}
 .card.flash{animation:flashRing 1.4s cubic-bezier(.16,1,.3,1)}
 @keyframes flashRing{0%{box-shadow:0 0 0 0 var(--accent),var(--shadow-s)}25%{box-shadow:0 0 0 4px var(--accent-soft),var(--shadow-s)}100%{box-shadow:0 0 0 0 transparent,var(--shadow-s)}}
+
+/* ===== Criar minha fonte ===== */
+.ft-ed{align-content:start}
+.ft-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ft-top .ibtn{border-color:var(--line);color:var(--ink)}
+.ft-top .ibtn:hover{border-color:var(--accent);color:var(--accent)}
+.ft-next .ic{transform:scaleX(-1)}
+.ft-curbox{display:grid;justify-items:center}
+.ft-curbox .v-label{color:var(--muted)}
+.ft-curbox b{font:800 46px/1.05 var(--f-display);color:var(--accent);min-width:1.2em;text-align:center;animation:pop .25s ease}
+.ft-pad{justify-self:center;width:min(100%,360px)}
+.ft-pad canvas{display:block;width:100%;aspect-ratio:1000/1150;max-width:100%;border-radius:18px;background:var(--field);border:1px solid var(--line);touch-action:none;cursor:crosshair;box-shadow:inset 0 2px 10px rgb(0 0 0 / .05)}
+.ft-tools{justify-content:center}
+.ft-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ft-progress{height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.ft-progress div{height:100%;width:100%;background:var(--accent);transform-origin:left;transform:scaleX(0);transition:transform .45s cubic-bezier(.16,1,.3,1)}
+#ft-sets{justify-self:start}
+.ft-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(48px,1fr));gap:6px}
+.ft-cell{appearance:none;position:relative;aspect-ratio:1000/1150;max-width:100%;border:1px solid var(--line);border-radius:10px;background:var(--field);cursor:pointer;padding:4px;display:grid;place-items:center;color:var(--ink);transition:border-color .15s ease,transform .15s ease,background-color .15s ease,box-shadow .15s ease}
+.ft-cell:hover{transform:translateY(-2px);border-color:var(--muted)}
+.ft-cell[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.ft-cell.done{background:var(--surface)}
+.ft-cell svg{width:100%;height:100%;display:block}
+.ft-cell polyline{fill:none;stroke:currentColor;stroke-width:var(--fw,70);stroke-linecap:round;stroke-linejoin:round}
+.ft-ghost{font:600 22px/1 var(--f-body);color:var(--muted);opacity:.45}
+.ft-cell small{position:absolute;right:4px;bottom:2px;font:600 9.5px var(--f-mono);color:var(--muted)}
+.ft-cell.done small{color:var(--accent)}
+.ft-out-wrap{background:var(--field);border:1px solid var(--line);border-radius:14px;overflow:hidden;min-height:90px}
+#ft-out{display:block;max-width:100%}
+.ft-ctrls{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px 20px}
+/* ===== Código binário ===== */
+.bn-out{display:block;font:600 clamp(18px,2.4vw,22px)/1.5 var(--f-display);color:var(--sun);overflow-wrap:anywhere;white-space:pre-wrap;max-height:280px;overflow:auto;min-width:0}
+.bn-out.mono-bits{font:600 clamp(14px,1.8vw,16px)/1.75 var(--f-mono);word-spacing:.3em}
+.bn-out.err{color:var(--warn);font:600 16px/1.5 var(--f-body)}
+.bn-tbl td{vertical-align:middle}
+.bn-ch{font:700 18px var(--f-display)}
+.bn-ch small{font:600 11px var(--f-body);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.lamps{display:inline-flex;align-items:center;gap:3px;flex-wrap:wrap}
+.lamps i{width:10px;height:10px;border-radius:50%;background:var(--line);box-shadow:inset 0 0 0 1px rgb(0 0 0 / .06)}
+.lamps i.on{background:var(--sun);box-shadow:0 0 6px var(--sun-glow)}
+.lamps b{width:8px}
+/* ===== Tradutor ===== */
+.tr-langs{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:center}
+.tr-swap{border-color:var(--line);color:var(--ink);font-size:18px;width:42px;height:42px}
+.tr-swap:hover{border-color:var(--accent);color:var(--accent);transform:rotate(180deg)}
+.tr-swap{transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .15s ease,color .15s ease}
+.tr-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tr-out{white-space:pre-wrap;min-height:2.7em;transition:opacity .2s ease}
+.tr-out.thinking{opacity:.45}
+.tr-hist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:8px}
+.tr-hist button{appearance:none;width:100%;text-align:left;border:1px solid var(--line);background:var(--field);border-radius:12px;padding:10px 12px;cursor:pointer;display:grid;gap:2px;color:var(--ink);transition:border-color .15s ease,transform .15s ease}
+.tr-hist button:hover{border-color:var(--accent);transform:translateY(-1px)}
+.tr-hist small{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tr-hist b{font-size:14px;font-weight:600;overflow-wrap:anywhere}
+.tr-hist span{font-size:13.5px;color:var(--accent);overflow-wrap:anywhere}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -747,6 +802,9 @@ body.has-dock .app{padding-bottom:110px}
 <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
 <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor"/></symbol>
 <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+<symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 19.5l7-7 3 3-7 7z"/><path d="M18 13.5l-1.5-7.5L2 2l3.5 14.5L13 18z"/><path d="M2 2l7.6 7.6"/><circle cx="11" cy="11" r="2"/></symbol>
+<symbol id="i-binary" viewBox="0 0 24 24"><rect x="3.5" y="3" width="5" height="7.5" rx="2.5"/><path d="M15 4.5l2-1.5v7.5M15 10.5h4M5 15l2-1.5V21M5 21h4"/><rect x="14.5" y="13.5" width="5" height="7.5" rx="2.5"/></symbol>
+<symbol id="i-translate" viewBox="0 0 24 24"><path d="M3.5 5.5h9M8 3.5v2M5.5 5.5c.6 3 2.6 5.6 5.5 7M10.5 5.5c-.8 3.6-3.4 6.6-7 8.5"/><path d="M12.5 21l4-9 4 9M13.9 18h5.2"/></symbol>
 </defs></svg>
 
 <div class="app">
@@ -1383,9 +1441,12 @@ const ITEMS=[
   {id:'notas',t:'f',g:'org',n:'Bloco de notas',d:'Anotações salvas e contador de palavras.',i:'note',k:'texto contador palavras caracteres'},
   {id:'contador',t:'f',g:'org',n:'Contador',d:'Conte pessoas, voltas ou pontos com um toque.',i:'plus',k:'clique contagem tally'},
   {id:'qr',t:'f',g:'criar',n:'QR Code',d:'Para links, Wi-Fi de casa e WhatsApp.',i:'qr',k:'qrcode wifi whatsapp link'},
+  {id:'fonte',t:'f',g:'criar',n:'Criar minha fonte',d:'Desenhe cada letra e escreva com a sua própria letra.',i:'pen',k:'fonte letra desenhar caligrafia handwriting criar font otf escrever minha letra'},
   {id:'letras',t:'f',g:'criar',n:'Teclado de letras',d:'Digite e o texto já sai com letras diferentes.',i:'type',k:'fonte instagram bio simbolo estrela coracao teclado letra'},
   {id:'cores',t:'f',g:'criar',n:'Cores',d:'Códigos HEX e RGB, combinações e contraste.',i:'palette',k:'hex rgb paleta design'},
   {id:'senha',t:'f',g:'criar',n:'Gerador de senhas',d:'Senhas fortes criadas no seu aparelho.',i:'key',k:'seguranca password'},
+  {id:'tradutor',t:'f',g:'textos',n:'Tradutor',d:'Palavras e frases em inglês, espanhol e mais 11 idiomas.',i:'translate',k:'traduzir traducao ingles espanhol frances idioma lingua dicionario palavra'},
+  {id:'binario',t:'f',g:'textos',n:'Código binário',d:'Frase vira 0 e 1, e 0 e 1 viram frase.',i:'binary',k:'binario codigo 0 1 bits bytes traduzir computador secreto'},
   {id:'sorteio',t:'f',g:'sorte',n:'Sorteador',d:'Nomes, números, dados, moeda e times.',i:'dice',k:'sortear aleatorio rifa amigo'},
   {id:'velha',t:'d',g:'mente',n:'Jogo da velha',d:'Contra um computador que não erra no nível máximo.',i:'grid3',k:'velha ia computador'},
   {id:'lig4',t:'d',g:'mente',n:'Lig 4',d:'Alinhe quatro peças antes do computador.',i:'connect',k:'quatro em linha ia'},
@@ -1408,8 +1469,8 @@ const ITEMS=[
   {id:'musica',t:'s',g:'musica',n:'Música de fundo',d:'Playlists com seus arquivos e links do YouTube.',i:'music',k:'player playlist mp3 youtube musica fundo tocar som'},
   {id:'botoes',t:'s',g:'efeitos',n:'Botões de som',d:'Crie botões com seus sons e dê o nome que quiser.',i:'pad',k:'soundboard efeitos sonoros meme risada aplausos botao'}
 ];
-const GROUPS={tempo:'Tempo e rotina',contas:'Contas e conversões',org:'Organização',criar:'Criar e compartilhar',sorte:'Sorte',mente:'Jogos de raciocínio',reflexo:'Reflexo e memória',turma:'Para jogar com a turma',musica:'Música',efeitos:'Efeitos sonoros'};
-const GCLS={tempo:'g1',contas:'g2',org:'g3',criar:'g4',sorte:'g5',mente:'g6',reflexo:'g7',turma:'g8',musica:'g1',efeitos:'g8'};
+const GROUPS={tempo:'Tempo e rotina',contas:'Contas e conversões',org:'Organização',criar:'Criar e compartilhar',textos:'Textos e idiomas',sorte:'Sorte',mente:'Jogos de raciocínio',reflexo:'Reflexo e memória',turma:'Para jogar com a turma',musica:'Música',efeitos:'Efeitos sonoros'};
+const GCLS={tempo:'g1',contas:'g2',org:'g3',criar:'g4',textos:'g6',sorte:'g5',mente:'g6',reflexo:'g7',turma:'g8',musica:'g1',efeitos:'g8'};
 const TABNAME={f:'Ferramentas',d:'Diversão',s:'Som'},TABHASH={f:'ferramentas',d:'diversao',s:'som'};
 const ITEM=new Map(ITEMS.map(x=>[x.id,x]));
 const HOOKS={};
@@ -2960,7 +3021,7 @@ async function saveFile(blob,filename,box){
     const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();
     if(box){const isV=/^video/.test(blob.type),isA=/^audio/.test(blob.type),m=el(isV?'video':isA?'audio':'img',isA?null:'result-img');m.src=url;if(isV||isA){m.controls=true;m.playsInline=true}else m.alt='Resultado pronto';box.replaceChildren(m)}
     setTimeout(()=>URL.revokeObjectURL(url),120000);
-    return box?'Download iniciado. Se não aparecer, toque e segure no resultado abaixo para salvar.':'Áudio baixado na pasta Downloads.';
+    return box?'Download iniciado. Se não aparecer, toque e segure no resultado abaixo para salvar.':'Arquivo baixado na pasta Downloads.';
   }catch(e){return 'Não foi possível baixar aqui.'}
 }
 const cleanName=(s,def)=>(String(s||'').replace(/[\\/:*?"<>|]+/g,'').trim().slice(0,80)||def);
@@ -3509,6 +3570,369 @@ function somTick(){
   if(SB.playing.size){more=true;sbProgress()}
   if(more)kick();
 }
+
+
+/* ================= Criar minha fonte ================= */
+const FT_TOP=900,FT_W=1000,FT_H=1150,FT_CAP=700,FT_XH=480,FT_DESC=-200;
+const FT_SETS=[['Maiúsculas','ABCDEFGHIJKLMNOPQRSTUVWXYZ'],['Minúsculas','abcdefghijklmnopqrstuvwxyz'],['Números e sinais','0123456789.,!?:;-\'"()@#&+=/*']];
+const FT_ALL=FT_SETS.map(x=>x[1]).join('');
+const FT_ACC={'́':[[[-25,0],[35,95]]],'̀':[[[-35,95],[25,0]]],'̂':[[[-60,0],[0,85],[60,0]]],'̃':[[[-70,10],[-40,58],[-5,40],[30,18],[65,62]]],'̈':[[[-45,40],[-44,41]],[[45,40],[46,41]]],'̧':[[[0,0],[8,-60],[48,-85],[20,-135],[-30,-125]]]};
+const FT_DEF={name:'Minha Letra',weight:70,slant:0,spacing:40,size:64,lower:true,color:'#14213D',text:'Olá! Esta é a minha letra.',g:{}};
+const FT={data:Object.assign({},FT_DEF,store.get('fonte:v1',{})),cur:'A',set:0,stroke:null,cache:new Map(),ui:false,saveT:0};
+if(!FT.data.g||typeof FT.data.g!=='object')FT.data.g={};
+function ftSave(){clearTimeout(FT.saveT);FT.saveT=setTimeout(()=>{if(!store.set('fonte:v1',FT.data))toast('Não deu para guardar a fonte neste navegador.')},250)}
+const ftDrawn=()=>FT_ALL.split('').filter(c=>FT.data.g[c]&&FT.data.g[c].length).length;
+function ftShape(strokes,fallback){
+  let mn=Infinity,mx=-Infinity;strokes.forEach(s=>s.forEach(p=>{if(p[0]<mn)mn=p[0];if(p[0]>mx)mx=p[0]}));
+  if(!isFinite(mn))return null;
+  const r=FT.data.weight/2,lsb=45,dx=lsb+r-mn;
+  return {s:strokes.map(s=>s.map(p=>[p[0]+dx,p[1]])),adv:Math.max(180,Math.round(mx-mn+2*r+2*lsb)),fb:!!fallback};
+}
+const ftToFont=raw=>{const o=[];for(let i=0;i+1<raw.length;i+=2)o.push([raw[i],FT_TOP-raw[i+1]]);return o};
+function ftGlyph(ch){
+  if(FT.cache.has(ch))return FT.cache.get(ch);
+  let g=null;const raw=FT.data.g[ch];
+  if(raw&&raw.length)g=ftShape(raw.map(ftToFont),false);
+  else if(FT.data.lower&&/^[a-z]$/.test(ch)&&FT.data.g[ch.toUpperCase()]&&FT.data.g[ch.toUpperCase()].length){
+    const k=FT_XH/FT_CAP;g=ftShape(FT.data.g[ch.toUpperCase()].map(s=>ftToFont(s).map(p=>[p[0]*k,p[1]*k])),true);
+  }else{
+    const d=ch.normalize('NFD');
+    if(d.length===2&&FT_ACC[d[1]]){const base=ftGlyph(d[0]);if(base){
+      const up=d[0]!==d[0].toLowerCase(),cx=base.adv/2,top=(d[1]==='̧'?0:(up?FT_CAP:FT_XH)+70);
+      g={s:base.s.concat(FT_ACC[d[1]].map(st=>st.map(p=>[cx+p[0],top+p[1]]))),adv:base.adv,fb:true};
+    }}
+  }
+  FT.cache.set(ch,g);return g;
+}
+function ftStroke(ctx,pts,X,Y){
+  if(!pts.length)return;
+  ctx.beginPath();const p0=pts[0];ctx.moveTo(X(p0),Y(p0));
+  if(pts.length===1){ctx.lineTo(X(p0)+.01,Y(p0));ctx.stroke();return}
+  for(let i=1;i<pts.length-1;i++){const a=pts[i],b=pts[i+1];ctx.quadraticCurveTo(X(a),Y(a),(X(a)+X(b))/2,(Y(a)+Y(b))/2)}
+  const l=pts[pts.length-1];ctx.lineTo(X(l),Y(l));ctx.stroke();
+}
+function ftMeasureFallback(ctx,ch,size){ctx.font='600 '+Math.round(size*.72)+'px '+cssVar('--f-body');return ctx.measureText(ch).width+FT.data.spacing*size/1000}
+function ftRender(cv,text,opt){
+  const D=FT.data,size=opt.size||D.size,sc=size/1000,pad=Math.round(size*.25),maxW=opt.width-pad*2,lineH=size*1.3,tan=Math.tan(D.slant*Math.PI/180);
+  const ctx=cv.getContext('2d');if(!ctx)return 0;
+  const lines=[];
+  String(text).split('\n').forEach(par=>{
+    let cur=[],w=0,wordStart=0;
+    const items=[];for(const ch of par){const g=ch===' '?null:ftGlyph(ch);const adv=ch===' '?(280+D.spacing)*sc:g?(g.adv+D.spacing)*sc:ftMeasureFallback(ctx,ch,size);items.push({ch,g,adv})}
+    for(let i=0;i<items.length;i++){
+      const it=items[i];
+      if(w+it.adv>maxW&&cur.length&&it.ch!==' '){
+        let cut=-1;for(let k=cur.length-1;k>=0;k--)if(cur[k].ch===' '){cut=k;break}
+        if(cut>0){lines.push(cur.slice(0,cut));cur=cur.slice(cut+1)}else{lines.push(cur);cur=[]}
+        w=cur.reduce((s,x)=>s+x.adv,0);
+      }
+      if(!(it.ch===' '&&!cur.length&&lines.length)){cur.push(it);w+=it.adv}
+    }
+    lines.push(cur);
+  });
+  const H=Math.max(lineH,lines.length*lineH)+pad*2;
+  if(opt.measureOnly)return H;
+  const dpr=opt.dpr||1;cv.width=Math.round(opt.width*dpr);cv.height=Math.round(H*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,opt.width,H);
+  if(opt.bg){ctx.fillStyle=opt.bg;ctx.fillRect(0,0,opt.width,H)}
+  ctx.lineCap='round';ctx.lineJoin='round';
+  lines.forEach((ln,li)=>{
+    let x=pad;const base=pad+li*lineH+size*.95;
+    ln.forEach(it=>{
+      if(it.g){ctx.strokeStyle=opt.color;ctx.globalAlpha=1;ctx.lineWidth=D.weight*sc;const ox=x;it.g.s.forEach(s=>ftStroke(ctx,s,p=>ox+(p[0]+p[1]*tan)*sc,p=>base-p[1]*sc))}
+      else if(it.ch!==' '){ctx.globalAlpha=opt.missingAlpha??.3;ctx.fillStyle=opt.color;ctx.font='600 '+Math.round(size*.72)+'px '+cssVar('--f-body');ctx.textBaseline='alphabetic';ctx.fillText(it.ch,x,base);ctx.globalAlpha=1}
+      x+=it.adv;
+    });
+  });
+  return H;
+}
+function ftEditorDraw(){
+  const cv=$('#ft-cv');if(!cv||!cv.getContext)return;const ctx=cv.getContext('2d');if(!ctx)return;
+  const [w,h,d]=fitCanvas(cv),s=w/FT_W,D=FT.data;
+  ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,w,h);
+  const line=(fy,dash,col,lw)=>{const y=(FT_TOP-fy)*s;ctx.save();ctx.setLineDash(dash?[8*d,8*d]:[]);ctx.strokeStyle=col;ctx.lineWidth=lw*d;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();ctx.restore()};
+  const mut=cssVar('--line'),acc=cssVar('--accent');
+  line(FT_CAP,true,mut,1);line(FT_XH,true,mut,1);line(0,false,acc,1.6);line(FT_DESC,true,mut,1);
+  ctx.save();ctx.fillStyle=cssVar('--muted');ctx.font='600 '+Math.round(11*d)+'px '+cssVar('--f-body');ctx.globalAlpha=.8;
+  [['topo das maiúsculas',FT_CAP],['topo das minúsculas',FT_XH],['linha de base',0],['parte de baixo (g, j, p)',FT_DESC]].forEach(([t,fy])=>ctx.fillText(t,8*d,(FT_TOP-fy)*s-6*d));ctx.restore();
+  const raw=D.g[FT.cur];
+  if(!raw||!raw.length){ctx.save();ctx.globalAlpha=.09;ctx.fillStyle=cssVar('--ink');ctx.font='400 '+Math.round(1000*s)+'px '+cssVar('--f-body');ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillText(FT.cur,w/2,FT_TOP*s);ctx.restore()}
+  ctx.strokeStyle=cssVar('--ink');ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=D.weight*s;
+  const strokes=(raw||[]).map(ftToFont);if(FT.stroke)strokes.push(ftToFont(FT.stroke));
+  strokes.forEach(st=>ftStroke(ctx,st,p=>p[0]*s,p=>(FT_TOP-p[1])*s));
+}
+function ftCellSVG(ch){
+  const g=FT.data.g[ch];
+  if(!g||!g.length)return '<span class="ft-ghost">'+esc(ch)+'</span>';
+  return '<svg viewBox="0 0 '+FT_W+' '+FT_H+'" aria-hidden="true">'+g.map(s=>{const p=[];for(let i=0;i+1<s.length;i+=2)p.push(s[i]+','+s[i+1]);if(p.length===1)p.push((s[0]+1)+','+s[1]);return '<polyline points="'+p.join(' ')+'"/>'}).join('')+'</svg>';
+}
+function ftGrid(){
+  if(!FT.ui)return;
+  $$('#ft-sets [data-set]').forEach(b=>b.setAttribute('aria-selected',String(+b.dataset.set===FT.set)));
+  $('#ft-grid').style.setProperty('--fw',FT.data.weight);
+  $('#ft-grid').innerHTML=FT_SETS[FT.set][1].split('').map(c=>'<button type="button" class="ft-cell'+(FT.data.g[c]&&FT.data.g[c].length?' done':'')+'" data-ch="'+esc(c)+'" aria-pressed="'+(c===FT.cur)+'" aria-label="Letra '+esc(c)+'">'+ftCellSVG(c)+'<small>'+esc(c)+'</small></button>').join('');
+  const n=ftDrawn();setText('ft-count',n+' de '+FT_ALL.length+' desenhados');$('#ft-prog').style.transform='scaleX('+(n/FT_ALL.length).toFixed(3)+')';
+}
+function ftSel(ch){FT.cur=ch;const si=FT_SETS.findIndex(s=>s[1].includes(ch));if(si>=0&&si!==FT.set)FT.set=si;setText('ft-cur',ch);ftEditorDraw();ftGrid()}
+function ftMove(d){const i=FT_ALL.indexOf(FT.cur);ftSel(FT_ALL[(i+d+FT_ALL.length)%FT_ALL.length])}
+let ftPrevT=0;
+function ftPreview(){
+  if(!FT.ui)return;cancelAnimationFrame(ftPrevT);
+  ftPrevT=requestAnimationFrame(()=>{const cv=$('#ft-out');const w=Math.max(200,cv.parentElement.clientWidth||600);cv.style.width=w+'px';ftRender(cv,FT.data.text,{width:w,size:FT.data.size,color:FT.data.color,dpr:Math.min(2,window.devicePixelRatio||1)});cv.style.height=(cv.height/Math.min(2,window.devicePixelRatio||1))+'px'});
+}
+function ftChanged(){FT.cache.clear();ftSave();ftGrid();ftPreview()}
+let otPromise=null;
+function loadOpentype(){
+  if(window.opentype)return Promise.resolve(window.opentype);
+  if(otPromise)return otPromise;
+  otPromise=new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/opentype.js/1.3.4/opentype.min.js';s.onload=()=>window.opentype?res(window.opentype):rej(new Error('noload'));s.onerror=()=>rej(new Error('blocked'));document.head.append(s);setTimeout(()=>rej(new Error('timeout')),20000)});
+  otPromise.catch(()=>{otPromise=null});return otPromise;
+}
+function ftResample(pts,step){if(pts.length<2)return pts.slice();const o=[pts[0]];let last=pts[0];for(let i=1;i<pts.length;i++){const p=pts[i];if(Math.hypot(p[0]-last[0],p[1]-last[1])>=step){o.push(p);last=p}}const e=pts[pts.length-1];if(o[o.length-1]!==e)o.push(e);return o}
+function ftOutline(ot,g,r,tan){
+  const P=new ot.Path(),poly=pts=>{let a=0;for(let i=0;i<pts.length;i++){const p=pts[i],q=pts[(i+1)%pts.length];a+=p[0]*q[1]-q[0]*p[1]}if(a<0)pts.reverse();pts.forEach((p,i)=>{const x=Math.round(p[0]+p[1]*tan),y=Math.round(p[1]);if(i)P.lineTo(x,y);else P.moveTo(x,y)});P.close()};
+  const circ=(c)=>{const n=12,o=[];for(let i=0;i<n;i++){const t=i/n*Math.PI*2;o.push([c[0]+Math.cos(t)*r,c[1]+Math.sin(t)*r])}poly(o)};
+  g.s.forEach(st=>{
+    const pts=ftResample(st,14);
+    if(pts.length===1){circ(pts[0]);return}
+    circ(pts[0]);circ(pts[pts.length-1]);
+    for(let i=0;i<pts.length-1;i++){
+      const a=pts[i],b=pts[i+1],dx=b[0]-a[0],dy=b[1]-a[1],L=Math.hypot(dx,dy)||1,nx=-dy/L*r,ny=dx/L*r;
+      poly([[a[0]+nx,a[1]+ny],[a[0]-nx,a[1]-ny],[b[0]-nx,b[1]-ny],[b[0]+nx,b[1]+ny]]);
+      if(i>0){const p=pts[i-1],ux=a[0]-p[0],uy=a[1]-p[1],cos=(ux*dx+uy*dy)/((Math.hypot(ux,uy)||1)*L);if(cos<.92)circ(a)}
+    }
+  });
+  return P;
+}
+async function ftExport(){
+  const msg=t=>setText('ft-msg',t);
+  if(!ftDrawn()){msg('Desenhe pelo menos uma letra antes de baixar a fonte.');return}
+  msg('Montando a fonte…');
+  let ot;try{ot=await loadOpentype()}catch(e){msg(IN_FRAME?'Aqui na prévia do Claude não dá para montar o arquivo da fonte. No seu site ('+SITE_URL+') funciona.':'Não consegui carregar a ferramenta de fontes. Confira a internet e tente de novo.');return}
+  try{
+    const D=FT.data,r=D.weight/2,tan=Math.tan(D.slant*Math.PI/180);
+    const glyphs=[new ot.Glyph({name:'.notdef',unicode:0,advanceWidth:500,path:new ot.Path()}),new ot.Glyph({name:'space',unicode:32,advanceWidth:280+D.spacing,path:new ot.Path()})];
+    const extra='ÁÀÂÃÄÉÈÊËÍÌÎÏÓÒÔÕÖÚÙÛÜÇÑáàâãäéèêëíìîïóòôõöúùûüçñ';
+    const seen=new Set();
+    (FT_ALL+extra).split('').forEach(ch=>{if(seen.has(ch))return;seen.add(ch);const g=ftGlyph(ch);if(!g)return;const cp=ch.codePointAt(0);glyphs.push(new ot.Glyph({name:'uni'+cp.toString(16).toUpperCase().padStart(4,'0'),unicode:cp,advanceWidth:g.adv+D.spacing,path:ftOutline(ot,g,r,tan)}))});
+    const fam=(D.name||'Minha Letra').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9 ]+/g,'').trim().slice(0,40)||'Minha Letra';
+    const font=new ot.Font({familyName:fam,styleName:'Regular',unitsPerEm:1000,ascender:900,descender:-250,glyphs});
+    const blob=new Blob([font.toArrayBuffer()],{type:'font/otf'});
+    const m=await saveFile(blob,cleanName(fam,'minha-letra').replace(/\s+/g,'-')+'.otf',null);
+    msg(m+' Para instalar no computador, abra o arquivo .otf e clique em Instalar. Depois ela aparece no Word, no Canva e em outros programas.');
+  }catch(e){msg('Não foi possível montar a fonte neste navegador.')}
+}
+async function ftPng(){
+  const cv=document.createElement('canvas'),w=1200;
+  ftRender(cv,FT.data.text||' ',{width:w,size:FT.data.size*1.6,color:FT.data.color,dpr:1,bg:$('#ft-bg').checked?null:'#FFFFFF',missingAlpha:.35});
+  const blob=await new Promise(r=>cv.toBlob(r,'image/png'));if(!blob){setText('ft-msg','Não foi possível criar a imagem.');return}
+  setText('ft-msg',await saveFile(blob,'texto-'+cleanName(FT.data.name,'minha-letra').replace(/\s+/g,'-').toLowerCase()+'.png',null));
+}
+HOOKS.fonte={init(b){
+  FT.ui=true;const D=FT.data;
+  b.innerHTML='<div class="som-cols">'+
+    '<div class="card ft-ed">'+
+      '<div class="ft-top"><button type="button" class="ibtn ft-nav" id="ft-prev" aria-label="Letra anterior">'+icon('back')+'</button><div class="ft-curbox"><span class="v-label">Desenhando</span><b id="ft-cur">A</b></div><button type="button" class="ibtn ft-nav ft-next" id="ft-next" aria-label="Próxima letra">'+icon('back')+'</button></div>'+
+      '<div class="ft-pad"><canvas id="ft-cv" aria-label="Área para desenhar a letra"></canvas></div>'+
+      '<div class="btns ft-tools"><button type="button" class="btn" id="ft-undo">Desfazer traço</button><button type="button" class="btn" id="ft-clear">Apagar letra</button><button type="button" class="btn primary" id="ft-go">Próxima letra</button></div>'+
+      '<p class="hint">Desenhe com o dedo ou o mouse. A letra “senta” na linha verde; g, j, p, q e y descem até a linha de baixo. Dica: digite uma letra no teclado para ir direto nela.</p>'+
+    '</div>'+
+    '<div class="som-stack">'+
+      '<div class="card"><div class="ft-head"><h3>Seus caracteres</h3><span class="pl-count" id="ft-count"></span></div><div class="ft-progress"><div id="ft-prog"></div></div>'+
+        '<div class="seg" id="ft-sets" role="tablist">'+FT_SETS.map((s,i)=>'<button type="button" role="tab" data-set="'+i+'" aria-selected="false">'+s[0]+'</button>').join('')+'</div>'+
+        '<div class="ft-grid" id="ft-grid"></div>'+
+        '<label class="check"><input type="checkbox" id="ft-lower"><span>Usar as maiúsculas no lugar das minúsculas que faltam</span></label>'+
+        '<p class="hint">Os acentos (á, ã, ê, ç…) entram sozinhos em cima das letras que você desenhou.</p></div>'+
+    '</div></div>'+
+    '<div class="card"><h3>Escreva com a sua letra</h3>'+
+      '<textarea class="short" id="ft-text" maxlength="600" aria-label="Texto para escrever com a sua fonte"></textarea>'+
+      '<div class="ft-out-wrap"><canvas id="ft-out" aria-label="Texto escrito com a sua fonte"></canvas></div>'+
+      '<div class="ft-ctrls">'+slider('ft-size','Tamanho',24,140,1,FT_DEF.size)+slider('ft-weight','Espessura do traço',20,160,1,FT_DEF.weight)+slider('ft-slant','Inclinação (°)',-20,25,1,FT_DEF.slant)+slider('ft-spacing','Espaço entre letras',-40,200,5,FT_DEF.spacing)+'</div>'+
+      '<div class="row2"><div class="field"><label for="ft-name">Nome da fonte</label><div class="inp"><input id="ft-name" class="txt" maxlength="40" autocomplete="off"></div></div><div class="field"><span class="lbl">Cor da tinta</span><div class="color-pick"><input type="color" id="ft-color" aria-label="Cor da tinta"><label class="check"><input type="checkbox" id="ft-bg"><span>Imagem com fundo transparente</span></label></div></div></div>'+
+      '<div class="btns"><button type="button" class="btn primary" id="ft-png">Baixar imagem do texto</button><button type="button" class="btn" id="ft-otf">Baixar fonte para instalar (.otf)</button><button type="button" class="btn danger" id="ft-wipe">Apagar a fonte toda</button></div>'+
+      '<p class="hint" id="ft-msg" aria-live="polite">As letras que faltam aparecem clarinhas, na letra normal.</p></div>';
+  $('#ft-text').value=D.text;$('#ft-name').value=D.name;$('#ft-color').value=D.color;$('#ft-lower').checked=!!D.lower;
+  [['size','size'],['weight','weight'],['slant','slant'],['spacing','spacing']].forEach(([k])=>setSlider('ft-'+k,D[k]));
+  wireResets(b);
+  const cv=$('#ft-cv');
+  const pt=e=>{const r=cv.getBoundingClientRect();return [Math.round(Math.min(FT_W,Math.max(0,(e.clientX-r.left)/r.width*FT_W))),Math.round(Math.min(FT_H,Math.max(0,(e.clientY-r.top)/r.height*FT_H)))]};
+  cv.addEventListener('pointerdown',e=>{e.preventDefault();try{cv.setPointerCapture(e.pointerId)}catch(x){}const p=pt(e);FT.stroke=[p[0],p[1]];ftEditorDraw()});
+  cv.addEventListener('pointermove',e=>{if(!FT.stroke)return;const evs=e.getCoalescedEvents?e.getCoalescedEvents():[e];evs.forEach(ev=>{const p=pt(ev),n=FT.stroke.length;if(Math.hypot(p[0]-FT.stroke[n-2],p[1]-FT.stroke[n-1])>=4)FT.stroke.push(p[0],p[1])});ftEditorDraw()});
+  const end=()=>{if(!FT.stroke)return;const s=FT.stroke;FT.stroke=null;(FT.data.g[FT.cur]=FT.data.g[FT.cur]||[]).push(s);ftEditorDraw();ftChanged()};
+  cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+  $('#ft-undo').addEventListener('click',()=>{const g=FT.data.g[FT.cur];if(g&&g.length){g.pop();if(!g.length)delete FT.data.g[FT.cur];ftEditorDraw();ftChanged()}});
+  $('#ft-clear').addEventListener('click',()=>{if(FT.data.g[FT.cur]){delete FT.data.g[FT.cur];ftEditorDraw();ftChanged()}});
+  $('#ft-go').addEventListener('click',()=>ftMove(1));$('#ft-next').addEventListener('click',()=>ftMove(1));$('#ft-prev').addEventListener('click',()=>ftMove(-1));
+  $('#ft-sets').addEventListener('click',e=>{const t=e.target.closest('[data-set]');if(!t)return;FT.set=+t.dataset.set;ftSel(FT_SETS[FT.set][1][0])});
+  $('#ft-grid').addEventListener('click',e=>{const c=e.target.closest('[data-ch]');if(c)ftSel(c.dataset.ch)});
+  $('#ft-lower').addEventListener('change',e=>{D.lower=e.target.checked;ftChanged()});
+  $('#ft-text').addEventListener('input',e=>{D.text=e.target.value;ftSave();ftPreview()});
+  $('#ft-name').addEventListener('input',e=>{D.name=e.target.value.slice(0,40);ftSave()});
+  $('#ft-color').addEventListener('input',e=>{D.color=e.target.value;ftSave();ftPreview()});
+  b.addEventListener('input',e=>{const id=e.target.id||'';const k={'ft-size':'size','ft-weight':'weight','ft-slant':'slant','ft-spacing':'spacing'}[id];if(!k)return;D[k]=+e.target.value;setText(id+'-o',e.target.value);if(k==='weight'){ftEditorDraw();ftChanged()}else{FT.cache.clear();ftSave();ftPreview()}});
+  $('#ft-png').addEventListener('click',ftPng);$('#ft-otf').addEventListener('click',ftExport);
+  let wipeArm=0;$('#ft-wipe').addEventListener('click',e=>{const btn=e.currentTarget;if(!wipeArm){wipeArm=setTimeout(()=>{wipeArm=0;btn.textContent='Apagar a fonte toda'},3000);btn.textContent='Toque de novo para apagar tudo';return}clearTimeout(wipeArm);wipeArm=0;btn.textContent='Apagar a fonte toda';D.g={};ftSel('A');ftChanged();setText('ft-msg','Fonte apagada. Pode começar de novo.')});
+  window.addEventListener('resize',()=>{if(curView==='fonte'){ftEditorDraw();ftPreview()}});
+  ftSel(FT.cur);ftPreview();
+},show(){ftEditorDraw();ftGrid();ftPreview()},key(e){
+  if(isTyping(e)||e.ctrlKey||e.metaKey||e.altKey)return;
+  if(e.key==='ArrowRight'){e.preventDefault();ftMove(1);return}if(e.key==='ArrowLeft'){e.preventDefault();ftMove(-1);return}
+  if(e.key==='Backspace'){e.preventDefault();$('#ft-undo').click();return}
+  if(e.key.length===1&&FT_ALL.includes(e.key)){e.preventDefault();ftSel(e.key)}
+}};
+
+/* ================= Código binário ================= */
+const BN={mode:store.get('bin:mode','auto'),text:store.get('bin:text','Olá!')};
+const isBinStr=s=>/[01]/.test(s)&&/^[\s01]+$/.test(s);
+function txtToBin(s){return Array.from(new TextEncoder().encode(s),b=>b.toString(2).padStart(8,'0')).join(' ')}
+function binToTxt(s){
+  const groups=s.trim().split(/\s+/).filter(Boolean);let bits;
+  if(groups.length>1&&groups.every(g=>g.length<=8))bits=groups.map(g=>g.padStart(8,'0')).join('');else bits=s.replace(/[^01]/g,'');
+  if(!bits.length)return {err:'Digite só 0 e 1.'};
+  if(bits.length%8)return {err:'Faltam '+(8-bits.length%8)+' dígitos: cada letra tem 8 zeros e uns (um byte).'};
+  const bytes=new Uint8Array(bits.length/8);for(let i=0;i<bytes.length;i++)bytes[i]=parseInt(bits.slice(i*8,i*8+8),2);
+  try{return {text:new TextDecoder('utf-8',{fatal:true}).decode(bytes),bytes}}catch(e){return {text:new TextDecoder().decode(bytes),bytes,warn:'Alguns grupos não formam letras válidas e viraram �.'}}
+}
+function binRun(){
+  const src=$('#bn-in').value,out=$('#bn-out'),rowsBox=$('#bn-rows');BN.text=src;store.set('bin:text',src.slice(0,2000));
+  const toText=BN.mode==='b2t'||(BN.mode==='auto'&&isBinStr(src));
+  setText('bn-dir',toText?'Binário → texto':'Texto → binário');
+  if(!src.trim()){out.textContent='—';setText('bn-stats','');rowsBox.innerHTML='';setText('bn-label','Resultado');return}
+  let text,bytes,warn='';
+  if(toText){const r=binToTxt(src);if(r.err){out.textContent=r.err;out.classList.add('err');setText('bn-stats','');rowsBox.innerHTML='';setText('bn-label','Em texto');return}text=r.text;bytes=r.bytes;warn=r.warn||'';out.textContent=text;setText('bn-label','Em texto')}
+  else{text=src;bytes=new TextEncoder().encode(src);out.textContent=txtToBin(src);setText('bn-label','Em binário')}
+  out.classList.remove('err');out.classList.toggle('mono-bits',!toText);
+  const chars=Array.from(text);
+  setText('bn-stats',pl(chars.length,'caractere','caracteres')+' · '+pl(bytes.length,'byte','bytes')+' · '+pl(bytes.length*8,'bit','bits')+(warn?' · '+warn:''));
+  const enc=new TextEncoder();
+  rowsBox.innerHTML=chars.slice(0,32).map(c=>{const bs=Array.from(enc.encode(c));return '<tr><td class="bn-ch">'+(c===' '?'<small>espaço</small>':c==='\n'?'<small>enter</small>':esc(c))+'</td><td class="n">'+bs.join(' ')+'</td><td class="n">'+bs.map(b=>b.toString(2).padStart(8,'0')).join(' ')+'</td><td><span class="lamps">'+bs.map(b=>b.toString(2).padStart(8,'0').split('').map(x=>'<i class="'+(x==='1'?'on':'')+'"></i>').join('')).join('<b></b>')+'</span></td></tr>'}).join('')+(chars.length>32?'<tr><td colspan="4" class="hint">Mostrando os primeiros 32 caracteres.</td></tr>':'');
+}
+HOOKS.binario={init(b){
+  b.innerHTML='<div class="grid2">'+
+    '<div class="card"><div class="seg" id="bn-mode" role="radiogroup" aria-label="Direção">'+[['auto','Automático'],['t2b','Texto → binário'],['b2t','Binário → texto']].map(([v,n])=>'<label><input type="radio" name="bn-mode" value="'+v+'"><span>'+n+'</span></label>').join('')+'</div>'+
+      '<div class="field"><label for="bn-in">Escreva uma frase ou cole um código binário</label><textarea class="short" id="bn-in" maxlength="4000"></textarea></div>'+
+      '<div class="chips"><button type="button" class="chipbtn" data-ex="Oi, tudo bem?">Oi, tudo bem?</button><button type="button" class="chipbtn" data-ex="01000101 01110101 00100000 01110100 01100101 00100000 01100001 01101101 01101111">Um código secreto</button><button type="button" class="chipbtn" data-ex="Canivete 2026 ⭐">Com emoji</button></div>'+
+      '<p class="hint">No automático, se tiver só 0 e 1 vira texto; qualquer outra coisa vira binário. Usa o padrão UTF-8, o mesmo dos computadores, então acentos e emojis funcionam.</p></div>'+
+    '<div class="visor"><div class="v-main"><span class="v-label" id="bn-label">Resultado</span><output class="bn-out" id="bn-out" aria-live="polite">—</output><p class="v-sub" id="bn-stats"></p></div>'+
+      '<div class="btns"><button type="button" class="btn primary" id="bn-copy">Copiar</button><button type="button" class="btn" id="bn-swap">Usar o resultado como entrada</button></div><span class="v-sub" id="bn-dir"></span></div>'+
+    '</div>'+
+    '<div class="card"><h3>Letra por letra</h3><div class="tbl-wrap"><table class="tbl bn-tbl"><thead><tr><th>Letra</th><th>Número</th><th>Binário</th><th>Luzes (1 acesa, 0 apagada)</th></tr></thead><tbody id="bn-rows"></tbody></table></div></div>';
+  $('#bn-in').value=BN.text;$$('#bn-mode input').forEach(i=>{i.checked=i.value===BN.mode});
+  $('#bn-in').addEventListener('input',binRun);
+  $('#bn-mode').addEventListener('change',e=>{BN.mode=e.target.value;store.set('bin:mode',BN.mode);binRun()});
+  b.addEventListener('click',e=>{const x=e.target.closest('[data-ex]');if(x){$('#bn-in').value=x.dataset.ex;binRun()}});
+  $('#bn-copy').addEventListener('click',e=>{const o=$('#bn-out');copyText(o.textContent,e.currentTarget,()=>selectEl(o))});
+  $('#bn-swap').addEventListener('click',()=>{const o=$('#bn-out');if(o.classList.contains('err')||o.textContent==='—')return;$('#bn-in').value=o.textContent;BN.mode='auto';$$('#bn-mode input').forEach(i=>{i.checked=i.value==='auto'});binRun()});
+  binRun();
+}};
+
+/* ================= Tradutor ================= */
+const TR_LANGS=[['pt','Português','pt-BR'],['en','Inglês','en-US'],['es','Espanhol','es-ES'],['fr','Francês','fr-FR'],['it','Italiano','it-IT'],['de','Alemão','de-DE'],['ja','Japonês','ja-JP'],['zh','Chinês','zh-CN'],['ko','Coreano','ko-KR'],['ru','Russo','ru-RU'],['ar','Árabe','ar-SA'],['nl','Holandês','nl-NL'],['tr','Turco','tr-TR'],['hi','Hindi','hi-IN']];
+const TR_NAME=Object.fromEntries(TR_LANGS.map(l=>[l[0],l[1]]));
+const TR_DICT=`olá|hello|hola;oi|hi|hola;tchau|bye|adiós;bom dia|good morning|buenos días;boa tarde|good afternoon|buenas tardes;boa noite|good night|buenas noches;obrigado|thank you|gracias;obrigada|thank you|gracias;muito obrigado|thank you very much|muchas gracias;por favor|please|por favor;desculpa|sorry|perdón;com licença|excuse me|disculpe;tudo bem|all right|todo bien;até logo|see you later|hasta luego;bem-vindo|welcome|bienvenido;parabéns|congratulations|felicidades;feliz aniversário|happy birthday|feliz cumpleaños;eu te amo|I love you|te quiero;não entendo|I don't understand|no entiendo;quanto custa|how much is it|cuánto cuesta;prazer|nice to meet you|mucho gusto;socorro|help|socorro;sim|yes|sí;não|no|no;eu|I|yo;você|you|tú;ele|he|él;ela|she|ella;nós|we|nosotros;eles|they|ellos;elas|they|ellas;meu|my|mi;minha|my|mi;seu|your|tu;sua|your|tu;o|the|el;a|the|la;os|the|los;as|the|las;um|a|un;uma|a|una;e|and|y;ou|or|o;mas|but|pero;com|with|con;sem|without|sin;de|of|de;do|of the|del;da|of the|de la;em|in|en;no|in the|en el;na|in the|en la;para|to|para;por|for|por;muito|very|muy;pouco|little|poco;mais|more|más;menos|less|menos;também|also|también;é|is|es;são|are|son;sou|am|soy;está|is|está;estou|am|estoy;ser|to be|ser;estar|to be|estar;ter|to have|tener;tenho|have|tengo;tem|has|tiene;fazer|to do|hacer;ir|to go|ir;vou|go|voy;vir|to come|venir;ver|to see|ver;comer|to eat|comer;beber|to drink|beber;dormir|to sleep|dormir;falar|to speak|hablar;amar|to love|amar;amo|love|amo;gosto|like|gusto;quero|want|quiero;querer|to want|querer;posso|can|puedo;poder|can|poder;saber|to know|saber;sei|know|sé;preciso|need|necesito;precisar|to need|necesitar;entender|to understand|entender;escrever|to write|escribir;ler|to read|leer;jogar|to play|jugar;brincar|to play|jugar;correr|to run|correr;andar|to walk|caminar;abrir|to open|abrir;fechar|to close|cerrar;comprar|to buy|comprar;vender|to sell|vender;pagar|to pay|pagar;trabalhar|to work|trabajar;estudar|to study|estudiar;casa|house|casa;escola|school|escuela;trabalho|work|trabajo;água|water|agua;comida|food|comida;pão|bread|pan;leite|milk|leche;café|coffee|café;carne|meat|carne;fruta|fruit|fruta;maçã|apple|manzana;banana|banana|plátano;arroz|rice|arroz;feijão|beans|frijoles;ovo|egg|huevo;queijo|cheese|queso;bolo|cake|pastel;cachorro|dog|perro;gato|cat|gato;pássaro|bird|pájaro;peixe|fish|pez;cavalo|horse|caballo;carro|car|coche;ônibus|bus|autobús;bicicleta|bicycle|bicicleta;avião|airplane|avión;livro|book|libro;telefone|phone|teléfono;celular|cell phone|celular;computador|computer|computadora;mesa|table|mesa;cadeira|chair|silla;porta|door|puerta;janela|window|ventana;cama|bed|cama;roupa|clothes|ropa;sapato|shoe|zapato;dia|day|día;noite|night|noche;hoje|today|hoy;amanhã|tomorrow|mañana;ontem|yesterday|ayer;agora|now|ahora;depois|later|después;antes|before|antes;sempre|always|siempre;nunca|never|nunca;aqui|here|aquí;ali|there|allí;onde|where|dónde;quando|when|cuándo;como|how|cómo;por que|why|por qué;porque|because|porque;quem|who|quién;o que|what|qué;que|that|que;qual|which|cuál;quanto|how much|cuánto;banheiro|bathroom|baño;hospital|hospital|hospital;mercado|market|mercado;rua|street|calle;ajuda|help|ayuda;amigo|friend|amigo;amiga|friend|amiga;família|family|familia;mãe|mother|madre;pai|father|padre;irmão|brother|hermano;irmã|sister|hermana;filho|son|hijo;filha|daughter|hija;avó|grandmother|abuela;avô|grandfather|abuelo;menino|boy|niño;menina|girl|niña;homem|man|hombre;mulher|woman|mujer;pessoa|person|persona;gente|people|gente;nome|name|nombre;tempo|time|tiempo;ano|year|año;mês|month|mes;semana|week|semana;hora|hour|hora;minuto|minute|minuto;grande|big|grande;pequeno|small|pequeño;bom|good|bueno;boa|good|buena;ruim|bad|malo;bonito|beautiful|bonito;bonita|beautiful|bonita;feio|ugly|feo;feliz|happy|feliz;triste|sad|triste;cansado|tired|cansado;novo|new|nuevo;velho|old|viejo;quente|hot|caliente;frio|cold|frío;fácil|easy|fácil;difícil|hard|difícil;rápido|fast|rápido;devagar|slow|despacio;certo|right|correcto;errado|wrong|equivocado;bem|well|bien;mal|badly|mal;vermelho|red|rojo;azul|blue|azul;verde|green|verde;amarelo|yellow|amarillo;preto|black|negro;branco|white|blanco;rosa|pink|rosa;roxo|purple|morado;laranja|orange|naranja;cinza|gray|gris;dois|two|dos;três|three|tres;quatro|four|cuatro;cinco|five|cinco;seis|six|seis;sete|seven|siete;oito|eight|ocho;nove|nine|nueve;dez|ten|diez;cem|hundred|cien;mil|thousand|mil;segunda-feira|Monday|lunes;terça-feira|Tuesday|martes;quarta-feira|Wednesday|miércoles;quinta-feira|Thursday|jueves;sexta-feira|Friday|viernes;sábado|Saturday|sábado;domingo|Sunday|domingo;sol|sun|sol;lua|moon|luna;chuva|rain|lluvia;céu|sky|cielo;mar|sea|mar;praia|beach|playa;cidade|city|ciudad;país|country|país;mundo|world|mundo;vida|life|vida;amor|love|amor;dinheiro|money|dinero;jogo|game|juego;música|music|música;filme|movie|película;festa|party|fiesta;cabeça|head|cabeza;mão|hand|mano;pé|foot|pie;olho|eye|ojo;boca|mouth|boca;coração|heart|corazón;dor|pain|dolor;médico|doctor|médico`;
+const TR_D=(()=>{const rows=TR_DICT.split(';').map(r=>r.split('|')),idx={pt:new Map(),en:new Map(),es:new Map()},L=['pt','en','es'];rows.forEach((r,i)=>L.forEach((l,k)=>{const key=r[k].toLowerCase();if(!idx[l].has(key))idx[l].set(key,i)}));return {rows,idx,L}})();
+function trOffline(text,src,tgt){
+  const k1=TR_D.L.indexOf(src),k2=TR_D.L.indexOf(tgt);if(k1<0||k2<0)return null;
+  const toks=text.match(/[\p{L}\p{M}'’-]+|[^\p{L}\p{M}'’-]+/gu)||[];let out='',hits=0,words=0;
+  for(let i=0;i<toks.length;){
+    if(!/\p{L}/u.test(toks[i])){out+=toks[i];i++;continue}
+    let done=false;
+    for(let n=3;n>=1&&!done;n--){
+      const parts=[];let j=i,cnt=0;while(j<toks.length&&cnt<n){if(/\p{L}/u.test(toks[j])){parts.push(toks[j]);cnt++;j++;if(cnt<n){if(j<toks.length&&/^\s+$/.test(toks[j])){j++}else break}}else break}
+      if(parts.length!==n)continue;
+      const key=parts.join(' ').toLowerCase(),r=TR_D.idx[src].get(key);
+      if(r!=null){let w=TR_D.rows[r][k2];if(/^\p{Lu}/u.test(parts[0])&&!(src==='en'&&parts[0]==='I'))w=w.charAt(0).toUpperCase()+w.slice(1);out+=w;hits+=n;words+=n;i=j;done=true}
+    }
+    if(!done){out+=toks[i];words++;i++}
+  }
+  return {text:out,hits,words};
+}
+function trDetect(t){
+  if(/[぀-ヿ]/.test(t))return 'ja';if(/[가-힯]/.test(t))return 'ko';if(/[一-鿿]/.test(t))return 'zh';if(/[Ѐ-ӿ]/.test(t))return 'ru';if(/[؀-ۿ]/.test(t))return 'ar';if(/[ऀ-ॿ]/.test(t))return 'hi';
+  const w=norm(t).match(/[a-z]+/g)||[],S={pt:'o a os as um uma de do da que e nao voce eu ele ela com para por mais muito tem estou esta sao bom obrigado ola tudo meu minha isso como',en:'the a an of and to is are you i he she it we they this that with for not have be was what how my your hello thanks good',es:'el la los las un una de del que y no usted yo tu el ella con para por mas muy tiene estoy esta son bueno gracias hola todo mi como',fr:'le la les un une de des du que et ne pas vous je il elle avec pour est sont bonjour merci tout mon',it:'il lo la gli le un una di del che e non tu io lui lei con per sono ciao grazie tutto mio come',de:'der die das ein eine und ist nicht ich du er sie mit fur sind hallo danke gut mein wie',nl:'de het een en is niet ik je hij zij met voor zijn hallo dank goed mijn',tr:'bir ve bu da de ne ben sen o ile icin merhaba tesekkurler iyi'};
+  let best='pt',bs=0;for(const l in S){const set=new Set(S[l].split(' '));let s=0;w.forEach(x=>{if(set.has(x))s++});if(/[ãõç]/.test(t)&&l==='pt')s+=3;if(/[ñ¿¡]/.test(t)&&l==='es')s+=3;if(/[äöüß]/.test(t)&&l==='de')s+=3;if(s>bs){bs=s;best=l}}
+  return best;
+}
+const TR={src:store.get('tr:src','auto'),tgt:store.get('tr:tgt','en'),hist:store.get('tr:hist',[]),busy:0,last:'',translators:new Map()};
+const withTimeout=(p,ms)=>Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),ms))]);
+async function trChrome(text,src,tgt,gesture){
+  try{
+    if(!('Translator' in self)||TR.noT)return null;
+    const key=src+'>'+tgt;let t=TR.translators.get(key);
+    if(!t){const av=await withTimeout(self.Translator.availability({sourceLanguage:src,targetLanguage:tgt}),1500);
+      if(av!=='available'){if(gesture&&(av==='downloadable'||av==='downloading')&&!TR.translators.has(key+'#dl')){TR.translators.set(key+'#dl',1);self.Translator.create({sourceLanguage:src,targetLanguage:tgt}).then(x=>TR.translators.set(key,x)).catch(()=>{})}return null}
+      t=await withTimeout(self.Translator.create({sourceLanguage:src,targetLanguage:tgt}),4000);TR.translators.set(key,t)}
+    return await withTimeout(t.translate(text),8000);
+  }catch(e){if(e&&e.message==='timeout')TR.noT=true;return null}
+}
+async function trDetectChrome(text){
+  try{if(!('LanguageDetector' in self)||TR.noD)return null;const av=await withTimeout(self.LanguageDetector.availability(),1200);if(av!=='available')return null;const d=await withTimeout(self.LanguageDetector.create(),3000);const r=await withTimeout(d.detect(text),2000);return r&&r[0]&&r[0].confidence>.5&&TR_NAME[r[0].detectedLanguage]?r[0].detectedLanguage:null}catch(e){if(e&&e.message==='timeout')TR.noD=true;return null}
+}
+async function trOnline(text,src,tgt){
+  const chunks=[];let cur='';(text.match(/[^.!?\n]+[.!?\n]*/g)||[text]).forEach(s=>{if((cur+s).length>450){if(cur)chunks.push(cur);cur=s.slice(0,450)}else cur+=s});if(cur)chunks.push(cur);
+  const out=[];
+  for(const c of chunks){
+    const mm=l=>({pt:'pt-BR',zh:'zh-CN'})[l]||l;
+    const ctl=typeof AbortController!=='undefined'?new AbortController():null;const tm=setTimeout(()=>{try{ctl&&ctl.abort()}catch(e){}},9000);
+    const r=await fetch('https://api.mymemory.translated.net/get?q='+encodeURIComponent(c)+'&langpair='+mm(src)+'|'+mm(tgt),ctl?{signal:ctl.signal}:undefined).finally(()=>clearTimeout(tm));
+    if(!r.ok)throw new Error('http');const j=await r.json();
+    if(j.quotaFinished||j.responseStatus==429)throw new Error('quota');
+    if(j.responseStatus&&+j.responseStatus!==200)throw new Error('status');
+    let t=(j.responseData&&j.responseData.translatedText)||'';const ta=document.createElement('textarea');ta.innerHTML=t;out.push(ta.value);
+  }
+  return out.join(' ').replace(/\s+([.,!?])/g,'$1').trim();
+}
+async function trRun(gesture){
+  const text=$('#tr-in').value.trim(),out=$('#tr-out'),how=t=>setText('tr-how',t);
+  setText('tr-count',$('#tr-in').value.length+'/2000');
+  if(!text){out.textContent='—';how('');setText('tr-pair','');return}
+  let src=TR.src;
+  if(src==='auto')src=(await trDetectChrome(text))||trDetect(text);
+  let tgt=TR.tgt;if(src===tgt)tgt=src==='pt'?'en':'pt';
+  setText('tr-pair',(TR.src==='auto'?'Detectado: ':'')+TR_NAME[src]+' → '+TR_NAME[tgt]);
+  const key=src+'|'+tgt+'|'+text;if(key===TR.last&&!gesture)return;TR.last=key;
+  const my=++TR.busy;out.classList.add('thinking');how('Traduzindo…');
+  let res=null,method='';
+  res=await trChrome(text,src,tgt,gesture);if(res)method='Traduzido no próprio aparelho (Chrome), sem internet.';
+  if(!res){try{res=await trOnline(text,src,tgt);method='Traduzido pela internet (MyMemory).'}catch(e){
+    const off=trOffline(text,src,tgt);
+    if(off&&off.hits){res=off.text;method=(e&&e.message==='quota'?'O limite grátis de hoje acabou. ':IN_FRAME?'Aqui na prévia do Claude a tradução pela internet fica bloqueada; no seu site ela funciona. ':'Sem internet agora. ')+'Usei o dicionário do Canivete, palavra por palavra: '+off.hits+' de '+off.words+' palavras encontradas.'}
+    else method=(e&&e.message==='quota'?'O limite grátis de tradução de hoje acabou. Tente amanhã.':IN_FRAME?'Aqui na prévia do Claude a tradução pela internet fica bloqueada. No seu site ela funciona. O dicionário sem internet tem só português, inglês e espanhol.':'Não consegui traduzir. Confira a internet. Sem internet, o dicionário do Canivete traduz palavras entre português, inglês e espanhol.');
+  }}
+  if(my!==TR.busy)return;
+  out.classList.remove('thinking');out.textContent=res||'—';out.dataset.lang=tgt;how(method);
+  if(res&&text.length<=300){TR.hist=[{s:src,t:tgt,a:text,b:res}].concat(TR.hist.filter(h=>h.a!==text||h.t!==tgt)).slice(0,12);store.set('tr:hist',TR.hist);trHist()}
+}
+function trHist(){
+  const box=$('#tr-hist');if(!box)return;
+  box.innerHTML=TR.hist.length?TR.hist.map((h,i)=>'<li><button type="button" data-h="'+i+'"><small>'+esc(TR_NAME[h.s]||h.s)+' → '+esc(TR_NAME[h.t]||h.t)+'</small><b>'+esc(h.a)+'</b><span>'+esc(h.b)+'</span></button></li>').join(''):'<li class="hint">As últimas traduções aparecem aqui.</li>';
+}
+let trT=0;
+HOOKS.tradutor={init(b){
+  const opts=(sel,auto)=>(auto?'<option value="auto">Detectar idioma</option>':'')+TR_LANGS.map(l=>'<option value="'+l[0]+'"'+(l[0]===sel?' selected':'')+'>'+l[1]+'</option>').join('');
+  b.innerHTML='<div class="grid2">'+
+    '<div class="card"><div class="tr-langs"><select class="sel" id="tr-src" aria-label="Idioma do texto">'+opts(TR.src,true)+'</select><button type="button" class="ibtn tr-swap" id="tr-swap" aria-label="Trocar os idiomas" title="Trocar os idiomas">⇄</button><select class="sel" id="tr-tgt" aria-label="Traduzir para">'+opts(TR.tgt,false)+'</select></div>'+
+      '<textarea class="short" id="tr-in" maxlength="2000" placeholder="Escreva uma palavra ou frase"></textarea>'+
+      '<div class="tr-row"><span class="hint" id="tr-count">0/2000</span><button type="button" class="btn primary" id="tr-go">Traduzir</button></div>'+
+      '<div class="chips">'+['Bom dia!','Onde fica o banheiro?','Quanto custa?','Eu não entendo','Obrigado pela ajuda','Qual é o seu nome?'].map(p=>'<button type="button" class="chipbtn" data-ph="'+p+'">'+p+'</button>').join('')+'</div></div>'+
+    '<div class="visor"><div class="v-main"><span class="v-label" id="tr-pair">Tradução</span><output class="v-text tr-out" id="tr-out" aria-live="polite">—</output></div>'+
+      '<div class="btns"><button type="button" class="btn primary" id="tr-copy">Copiar</button><button type="button" class="btn" id="tr-say">'+icon('vol')+' Ouvir</button></div><p class="v-sub" id="tr-how"></p></div>'+
+    '</div>'+
+    '<div class="card"><h3>Últimas traduções</h3><ul class="tr-hist" id="tr-hist"></ul></div>';
+  $('#tr-in').value=store.get('tr:text','Bom dia! Tudo bem?');
+  $('#tr-src').value=TR.src;$('#tr-tgt').value=TR.tgt;
+  const later=()=>{clearTimeout(trT);trT=setTimeout(()=>trRun(false),900)};
+  $('#tr-in').addEventListener('input',e=>{store.set('tr:text',e.target.value.slice(0,2000));setText('tr-count',e.target.value.length+'/2000');later()});
+  $('#tr-in').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();trRun(true)}});
+  $('#tr-go').addEventListener('click',()=>{TR.last='';trRun(true)});
+  $('#tr-src').addEventListener('change',e=>{TR.src=e.target.value;store.set('tr:src',TR.src);TR.last='';trRun(true)});
+  $('#tr-tgt').addEventListener('change',e=>{TR.tgt=e.target.value;store.set('tr:tgt',TR.tgt);TR.last='';trRun(true)});
+  $('#tr-swap').addEventListener('click',()=>{const o=$('#tr-out').textContent,from=$('#tr-out').dataset.lang;const s=TR.src==='auto'?(trDetect($('#tr-in').value)||'pt'):TR.src;TR.src=from||TR.tgt;TR.tgt=s;$('#tr-src').value=TR.src;$('#tr-tgt').value=TR.tgt;store.set('tr:src',TR.src);store.set('tr:tgt',TR.tgt);if(o&&o!=='—')$('#tr-in').value=o;TR.last='';trRun(true)});
+  b.addEventListener('click',e=>{const p=e.target.closest('[data-ph]');if(p){$('#tr-in').value=p.dataset.ph;TR.last='';trRun(true);return}const h=e.target.closest('[data-h]');if(h){const x=TR.hist[+h.dataset.h];if(!x)return;$('#tr-in').value=x.a;TR.src=x.s;TR.tgt=x.t;$('#tr-src').value=x.s;$('#tr-tgt').value=x.t;const o=$('#tr-out');o.textContent=x.b;o.dataset.lang=x.t;setText('tr-pair',TR_NAME[x.s]+' → '+TR_NAME[x.t]);setText('tr-how','Do seu histórico.')}});
+  $('#tr-copy').addEventListener('click',e=>{const o=$('#tr-out');if(o.textContent!=='—')copyText(o.textContent,e.currentTarget,()=>selectEl(o))});
+  $('#tr-say').addEventListener('click',()=>{const o=$('#tr-out'),t=o.textContent;if(!t||t==='—')return;try{const u=new SpeechSynthesisUtterance(t),l=TR_LANGS.find(x=>x[0]===o.dataset.lang);if(l)u.lang=l[2];speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){toast('Este navegador não consegue falar o texto.')}});
+  trHist();trRun(false);
+}};
 
 /* ================= Início ================= */
 setupSections();

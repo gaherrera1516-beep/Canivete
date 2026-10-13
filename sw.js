@@ -1,5 +1,5 @@
 /* Canivete do Dia a Dia: guarda o site no aparelho para funcionar sem internet */
-const CACHE = 'canivete-v2';
+const CACHE = 'canivete-v3';
 const BASE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './privacidade.html'];
 
 self.addEventListener('install', (e) => {
@@ -18,11 +18,11 @@ self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET') return;
 
-  // Só guarda o próprio site, as fontes e a biblioteca do QR Code.
+  // Só guarda o próprio site, as fontes e as bibliotecas (QR Code e criador de fontes).
   // Músicas, vídeos e o YouTube passam direto, sem ocupar espaço no aparelho.
   const url = new URL(req.url);
   const proprio = url.origin === self.location.origin;
-  const permitido = proprio || /(^|\.)fonts\.(googleapis|gstatic)\.com$/.test(url.hostname) || url.hostname === 'cdn.jsdelivr.net';
+  const permitido = proprio || /(^|\.)fonts\.(googleapis|gstatic)\.com$/.test(url.hostname) || url.hostname === 'cdn.jsdelivr.net' || url.hostname === 'cdnjs.cloudflare.com';
   if (!permitido || req.headers.has('range') || req.destination === 'audio' || req.destination === 'video') return;
 
   // Páginas: tenta a internet primeiro (para pegar atualizações) e usa a cópia guardada sem conexão
