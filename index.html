@@ -749,6 +749,8 @@ body.has-dock .app{padding-bottom:110px}
 .scope{transition:border-color .25s ease,box-shadow .25s ease}
 #vz-visor[data-wt="talk"] .scope{border-color:var(--p2);box-shadow:0 0 0 3px rgb(229 72 77 / .2)}
 #vz-visor[data-wt="play"] .scope{border-color:var(--sun);box-shadow:0 0 0 3px var(--sun-glow)}
+.rec-out .btns .btn{display:inline-flex;align-items:center;gap:6px}
+.rec-out .btn.primary{background:var(--sun);border-color:var(--sun);color:#14213D}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -818,6 +820,7 @@ body.has-dock .app{padding-bottom:110px}
 <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
 <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor"/></symbol>
 <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 10.5 13.5M21 3l-6.5 18-4-7.5L3 9.5z"/></symbol>
 </defs></svg>
 
 <div class="app">
@@ -3034,7 +3037,7 @@ async function saveFile(blob,filename,box){
     const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();
     if(box){const isV=/^video/.test(blob.type),isA=/^audio/.test(blob.type),m=el(isV?'video':isA?'audio':'img',isA?null:'result-img');m.src=url;if(isV||isA){m.controls=true;m.playsInline=true}else m.alt='Resultado pronto';box.replaceChildren(m)}
     setTimeout(()=>URL.revokeObjectURL(url),120000);
-    return 'Download iniciado. Se não aparecer, toque e segure no resultado abaixo para salvar.';
+    return box?'Download iniciado. Se não aparecer, toque e segure no resultado abaixo para salvar.':'Áudio baixado na pasta Downloads.';
   }catch(e){return 'Não foi possível baixar aqui.'}
 }
 const cleanName=(s,def)=>(String(s||'').replace(/[\\/:*?"<>|]+/g,'').trim().slice(0,80)||def);
@@ -3338,6 +3341,7 @@ function wtPlay(){
   const s=ctx.createBufferSource();s.buffer=buf;s.connect(ctx.destination);
   s.onended=()=>{if(WT.src!==s)return;WT.src=null;WT.state='cool';WT.until=performance.now()+450;vzRender()};
   WT.src=s;try{if(ctx.state!=='running')ctx.resume()}catch(e){}s.start();vzRender();
+  try{VZ.lastBlob=wavFrom([d],sr);vzRecShow('Sua última fala')}catch(e){}
 }
 async function vzSetMode(m){
   if(!VZ_MODES[m]||m===VZ.mode)return;const prev=VZ.mode;VZ.mode=m;store.set('voz:modo',m);
@@ -3357,15 +3361,24 @@ function vzRecToggle(){
   VZ.recT=setInterval(()=>{const s=(Date.now()-VZ.recAt)/1000;if(VZ.ui)setText('vz-pill-t','Gravando '+tfmt(s));if(s>=600)try{r.stop()}catch(e){}},250);
   vzRender();
 }
-function audioResult(box,blob,base,onSave){
+const audExt=blob=>/wav/.test(blob.type)?'wav':/ogg/.test(blob.type)?'ogg':/mp4/.test(blob.type)?'m4a':'webm';
+async function shareAudio(blob,base){
+  let file;try{file=new File([blob],base+'.'+audExt(blob),{type:blob.type||'audio/wav'})}catch(e){return 'nope'}
+  try{if(navigator.canShare&&navigator.share&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Áudio com voz modificada'});return 'ok'}}catch(e){if(e&&e.name==='AbortError')return 'cancel'}
+  return 'nope';
+}
+function audioResult(box,blob,base,onSave,label){
   const url=URL.createObjectURL(blob);
-  box.innerHTML='<audio controls preload="metadata"></audio><div class="btns"><button type="button" class="btn primary small" data-r="save">Salvar áudio</button><button type="button" class="btn small" data-r="pad">Criar botão de som com ele</button></div><p class="hint" data-r="msg"></p>';
+  box.innerHTML=(label?'<span class="v-label">'+label+'</span>':'')+'<audio controls preload="metadata"></audio><div class="btns"><button type="button" class="btn primary small" data-r="share">'+icon('send')+' Mandar no WhatsApp</button><button type="button" class="btn small" data-r="save">Salvar</button><button type="button" class="btn small" data-r="pad">Virar botão de som</button></div><p class="hint" data-r="msg">“Mandar no WhatsApp” abre a lista de apps: escolha o WhatsApp e o contato.</p>';
   box.querySelector('audio').src=url;box.hidden=false;
-  box.onclick=async e=>{const b=e.target.closest('[data-r]');if(!b)return;
-    if(b.dataset.r==='save'){b.disabled=true;const ext=/wav/.test(blob.type)?'wav':/ogg/.test(blob.type)?'ogg':/mp4/.test(blob.type)?'m4a':'webm';const m=await saveFile(blob,base+'.'+ext,null);b.disabled=false;box.querySelector('[data-r="msg"]').textContent=m}
+  const msg=t=>{box.querySelector('[data-r="msg"]').textContent=t};
+  box.onclick=async e=>{const b=e.target.closest('[data-r]');if(!b||b.tagName!=='BUTTON')return;
+    box.dataset.busy='1';setTimeout(()=>{delete box.dataset.busy},4000);
+    if(b.dataset.r==='share'){b.disabled=true;const r=await shareAudio(blob,base);if(r==='ok')msg('Pronto. Se escolheu o WhatsApp, o áudio já foi para a conversa.');else if(r==='cancel')msg('Envio cancelado.');else{const m=await saveFile(blob,base+'.'+audExt(blob),null);msg((IN_FRAME?'Aqui na prévia do Claude a lista de apps fica bloqueada; no seu site ela abre. ':'Este navegador não abre a lista de apps. ')+m+' Depois anexe o áudio na conversa do WhatsApp.')}b.disabled=false}
+    else if(b.dataset.r==='save'){b.disabled=true;const m=await saveFile(blob,base+'.'+audExt(blob),null);b.disabled=false;msg(m)}
     else if(b.dataset.r==='pad'){SB.pending={blob,name:onSave||'Minha voz'};go('botoes',true)}};
 }
-function vzRecShow(){if(!VZ.ui||!VZ.lastBlob)return;const box=$('#vz-rec-out');audioResult(box,VZ.lastBlob,'voz-'+cleanName(vzName()[0].toLowerCase(),'modificada'),'Voz '+vzName()[0])}
+function vzRecShow(label){if(!VZ.ui||!VZ.lastBlob)return;const box=$('#vz-rec-out');if(box.dataset.busy)return;const h=new Date();audioResult(box,VZ.lastBlob,'voz-'+cleanName(vzName()[0].toLowerCase(),'modificada')+'-'+pad(h.getHours())+'h'+pad(h.getMinutes())+'m'+pad(h.getSeconds()),'Voz '+vzName()[0],label||'Sua gravação')}
 async function vzFile(file){
   const msg=t=>setText('vz-file-msg',t),out=$('#vz-file-out');
   msg('Processando “'+file.name+'”…');out.hidden=true;
