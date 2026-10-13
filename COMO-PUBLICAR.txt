@@ -1,0 +1,48 @@
+CANIVETE DO DIA A DIA: COMO PUBLICAR DE GRAÇA NO GITHUB PAGES
+=============================================================
+
+O que tem nesta pasta
+---------------------
+index.html              o site inteiro
+manifest.webmanifest    nome, cores e ícones para instalar como app
+sw.js                   faz o site funcionar sem internet
+icon-192.png, icon-512.png, icon-maskable-512.png, apple-touch-icon.png   ícones
+privacidade.html        política de privacidade (pedida por lojas de apps)
+.nojekyll               arquivo vazio que o GitHub Pages usa (pode estar oculto no seu computador)
+COMO-PUBLICAR.txt       este guia (não precisa subir)
+
+Passo a passo
+-------------
+1. Descompacte o arquivo canivete-site.zip.
+   No celular Android, abra o app "Arquivos", toque no zip e escolha "Extrair".
+
+2. Crie uma conta grátis em https://github.com (botão "Sign up") e confirme o e-mail.
+
+3. Crie um repositório:
+   toque no "+" no topo e em "New repository".
+   Nome: canivete
+   Deixe marcado "Public" (no plano grátis, o GitHub Pages só funciona em repositório público).
+   Toque em "Create repository".
+
+4. Envie os arquivos:
+   na página do repositório, toque em "uploading an existing file".
+   Arraste ou selecione TODOS os arquivos de dentro da pasta (não a pasta em si).
+   Toque em "Commit changes".
+
+5. Ligue o GitHub Pages:
+   no repositório, vá em "Settings" e depois em "Pages" (no menu da esquerda).
+   Em "Source", escolha "Deploy from a branch".
+   Em "Branch", escolha "main" e a pasta "/ (root)". Toque em "Save".
+
+6. Espere de 1 a 2 minutos e recarregue a página de configurações.
+   O endereço aparece no topo, no formato:
+   https://SEU-USUARIO.github.io/canivete/
+
+7. Instale como app:
+   Android (Chrome): abra o endereço, toque no menu de três pontos e em "Instalar app" ou "Adicionar à tela inicial".
+   iPhone (Safari): abra o endereço, toque em Compartilhar e em "Adicionar à Tela de Início".
+
+Para atualizar depois
+---------------------
+No repositório, toque em "Add file" > "Upload files", envie o novo index.html e toque em "Commit changes".
+O site atualiza em 1 ou 2 minutos. Quem instalou como app recebe a versão nova ao abrir com internet.
